@@ -38,11 +38,11 @@ Google Scholar: [Dr. Vahidi-Asl on Google Scholar](https://scholar.google.com.my
 
 This repository and its educational content were made possible thanks to the valuable contributions and dedication of our Teaching Assistants. Their efforts in preparing materials, organizing content, and supporting the learning experience played a crucial role in shaping and completing this resource.
 
-Thanks to **Aras Valizadeh** for leading the TA team with responsibility and care.
+Thanks to Aras Valizadeh for leading the TA team with responsibility and care.
 
 We are also grateful to the following individuals (in alphabetical) for their commitment to the development and success of this repository:
 
-- Samira Ahmadnejad Sharamine *(Project Team Lead)*
+- Samira Ahmadnejad Sharamin *(Project Team Lead)*
 - Ghaem Aliabadi  
 - Arman Asadi  
 - Amirhossein Ashrafian  
@@ -64,15 +64,15 @@ We are also grateful to the following individuals (in alphabetical) for their co
 - Zahra Roshani  
 - Kimia Rouhanifar  
 - Aria Sedigh  
-- Mehsa Sami Zadeh  
-- Arya Shako  
+- Mehrsa Samizadeh  
+- Aria Shako  
 - Sara Shiri  
-- Sahar Shah Rajabian  
+- Sahar Shah-Rajabian  
 - Rouzbeh Soltani  
 - Amirhossein Sadr  
-- Nazanin Zahra Farhang  
+- Nazanin Zahra Farhanj
 - Borna Maherani *(Exercise Design Lead)*  
-- Arya Zaryab  
+- Aria Zaryab  
 - AmirAli Vakili  
 - AmirReza Yazdan Panah  
 
