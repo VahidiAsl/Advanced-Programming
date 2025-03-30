@@ -64,7 +64,7 @@ We are also grateful to the following individuals (in alphabetical) for their co
 - Zahra Roshani  
 - Kimia Rouhanifar  
 - Aria Sedigh  
-- Mehrsa Samizadeh  
+- Mehrsa Samizadeh *(Exercise Design Lead)*  
 - Aria Shako  
 - Sara Shiri  
 - Sahar Shah-Rajabian  
