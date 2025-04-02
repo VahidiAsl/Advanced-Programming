@@ -32,7 +32,7 @@ Google Scholar: [Dr. Vahidi-Asl on Google Scholar](https://scholar.google.com.my
 - Unit Testing
 - Reflection & Generic
 - Working with Git and GitHub
-- Final Project: Flutter application | Unity Game
+- Final Project: Flutter application | Unity game
 
 ## 💡 Contributors and Appreciation
 
@@ -60,7 +60,8 @@ We are also grateful to the following individuals (in alphabetical) for their co
 - Armita Kamari  
 - AmirMahdi Mashaikhi  
 - Amir Shayan Moghaddas  
-- Seyed Sadra Mousavi *(Workshop Lead)*  
+- Seyed Sadra Mousavi *(Workshop Lead)*
+- Erfan Rafei *(Game Team Lead)*
 - Zahra Roshani  
 - Kimia Rouhanifar  
 - Aria Sedigh  
