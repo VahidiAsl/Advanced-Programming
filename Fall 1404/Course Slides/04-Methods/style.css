@@ -1,0 +1,175 @@
+/* GLOBAL STYLESHEET */
+
+/* 1. Variables & Base Setup */
+:root {
+  --font-family: "Vazirmatn", "IRANSans", "XB Zar", ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+body, .jp-Notebook {
+  font-family: var(--font-family);
+  color: #0b132b;
+  line-height: 1.8;
+}
+
+[dir="rtl"] {
+  direction: rtl;
+}
+
+/* 2. Card: The base for all slides */
+.card {
+  background: white !important;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(2, 6, 23, .06);
+  padding: 1.5rem 1.75rem;
+  margin: 2rem auto;
+  max-width: 900px;
+}
+
+/* Special cover card */
+.cover-card {
+  padding: 3rem 2rem;
+  text-align: center;
+  background:
+      radial-gradient(1200px 600px at 100% -10%, rgba(29, 78, 216, .08), transparent 60%),
+      radial-gradient(900px 500px at -10% 120%, rgba(5, 150, 105, .08), transparent 60%),
+      #ffffff;
+}
+
+.title {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 800;
+  color: transparent;
+  background: linear-gradient(90deg, #1d4ed8, #059669);
+  -webkit-background-clip: text;
+          background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+/* 3. Typography */
+h1, h2, h3 {
+  font-weight: 800;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  color: #1d4ed8;
+  background: linear-gradient(90deg, #1d4ed8, #059669);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+h2 {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  color: #dc2626;
+  text-align: center;
+}
+
+h3 {
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+  color: #dc2626;
+  text-align: center;
+}
+
+p {
+  margin: 0 0 1rem 0;
+}
+
+a {
+  color: #1d4ed8;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+strong { color: #1d4ed8; }
+em { font-style: normal; color: #374151; }
+code { direction: ltr; }
+
+/* 4. Lists */
+ul, ol {
+  padding-right: 1.25rem;
+  margin-bottom: 1rem;
+}
+li {
+  margin-bottom: 0.5rem;
+}
+
+p, ol, li {
+  color: #0b132b;
+}
+
+/* 5. Reusable Components */
+.slide-note {
+  background: #f9fafb;
+  border: 1px dashed #e5e7eb;
+  color: #0b132b;
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  margin: 1rem 0 0 0;
+  font-size: 0.95rem;
+  max-width: 850px;
+}
+
+.images {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  margin: 2rem auto;
+}
+
+.images img {
+  height: 170px;
+  object-fit: contain;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 0.8rem;
+  box-shadow: 0 2px 8px rgba(2, 6, 23, .06);
+}
+
+.images-big {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  margin: 2rem auto;
+}
+
+.images-big img {
+  height: 300px;
+}
+
+.divider {
+  width: min(72%, 540px);
+  height: 2px;
+  border: 0;
+  margin: 2.5rem auto;
+  background: linear-gradient(90deg, transparent, rgba(29, 78, 216, .35), rgba(5, 150, 105, .35), transparent);
+}
+
+/* 6. Cover-specific elements */
+.brand-center { display: flex; justify-content: center; margin-bottom: 1rem; }
+.logo { width: 160px; height: 160px; object-fit: contain; }
+.pretitle { color: #059669; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; display: flex; justify-content: center; align-items: center; text-align: center;}
+.inst { color: #dc5d26; margin-top: 0.25rem; display: flex; justify-content: center; align-items: center; text-align: center;}
+.authors {
+  display: inline-block;
+  padding: .35rem .75rem;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  color: #0b132b;
+  background: rgba(2, 6, 23, .03);
+  margin-top: 1rem;
+  max-width: 300px;
+}
