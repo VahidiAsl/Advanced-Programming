@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Whisper - Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="login-container">
+        <h2><i class="fa-brands fa-rocketchat"></i> Whisper Chat</h2>
+        <input type="text" id="username" placeholder="Username" autocomplete="off">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()"><i class="fa-solid fa-right-to-bracket"></i> Login / Register</button>
+        <p id="errorMsg" style="color: var(--danger); margin-top: 15px; display: none;"></p>
+    </div>
+
+    <script>
+        async function login() {
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+            if(!user || !pass) return alert("Please fill all fields");
+
+            const res = await fetch('http://localhost:8081/api/login', {
+                method: 'POST',
+                body: JSON.stringify({ user, pass })
+            });
+
+            if (res.status === 200 || res.status === 201) {
+                localStorage.setItem('whisperUser', user);
+                window.location.href = 'chat.html';
+            } else {
+                document.getElementById('errorMsg').innerText = "Wrong password!";
+                document.getElementById('errorMsg').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Whisper - Chat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="profile-section">
+                <!-- کلیک روی عکس برای تغییر آن -->
+                <input type="file" id="profileUpload" style="display: none;" accept="image/*" onchange="uploadProfile(this)">
+                <img src="https://via.placeholder.com/80" id="profilePic" class="profile-pic" onclick="document.getElementById('profileUpload').click()" title="Click to change profile">
+                <h3 id="displayUser">Username</h3>
+                <button class="icon-btn" onclick="deleteProfile()" style="font-size: 0.8rem; padding: 5px; margin-top:5px; border-radius: 5px;"><i class="fa-solid fa-trash"></i> Remove Pic</button>
+            </div>
+            
+
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search user..." autocomplete="off" onkeypress="if(event.key === 'Enter') searchUser()">
+                <button onclick="searchUser()"><i class="fa-solid fa-search"></i></button>
+            </div>
+            <div id="searchResult" style="font-size: 0.8rem; text-align: center; margin-bottom: 10px; height: 15px;"></div>
+            
+            <h4 style="margin-bottom: 10px; color: var(--primary); margin-top: 10px;">Rooms</h4>
+            <ul class="room-list">
+                <li class="active" onclick="switchRoom('General', this)">General</li>
+                <li onclick="switchRoom('University', this)">University</li>
+                <li onclick="switchRoom('Gaming', this)">Gaming</li>
+            </ul>
+
+            <button onclick="logout()" style="margin-top: auto; background: var(--danger);"><i class="fa-solid fa-power-off"></i> Logout</button>
+        </div>
+
+        <!-- Main Chat -->
+        <div class="main-chat">
+            <div class="chat-header" id="roomTitle"># General</div>
+            <div class="chat-messages" id="chatBox">
+                <!-- Messages will load here -->
+            </div>
+            
+            <div class="chat-input-area">
+                <input type="file" id="imageInput" style="display: none;" accept="image/*" onchange="sendImage(this)">
+                <button class="icon-btn" onclick="document.getElementById('imageInput').click()"><i class="fa-solid fa-image"></i></button>
+                <input type="text" id="msgInput" placeholder="Type a message..." autocomplete="off" onkeypress="if(event.key === 'Enter') sendText()">
+                <button id="sendBtn" onclick="sendText()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const currentUser = localStorage.getItem('whisperUser');
+        if (!currentUser) window.location.href = 'login.html';
+        document.getElementById('displayUser').innerText = currentUser;
+
+        let currentRoom = "General";
+        const API_URL = "http://localhost:8081/api";
+
+
+
+
+        
+        // --- User Search ---
+        async function searchUser() {
+            const query = document.getElementById('searchInput').value.trim();
+            const resultDiv = document.getElementById('searchResult');
+            if (!query) { resultDiv.innerText = ''; return; }
+
+            try {
+                const res = await fetch(`${API_URL}/user?search=${query}`);
+                if (res.ok) {
+                    resultDiv.style.color = 'var(--success)';
+                    resultDiv.innerText = `User "${query}" found!`;
+                } else {
+                    resultDiv.style.color = 'var(--danger)';
+                    resultDiv.innerText = 'User not found.';
+                }
+            } catch(e) {
+                resultDiv.innerText = 'Error connecting.';
+            }
+        }
+
+
+
+
+
+
+        // --- Profile Management (GET, PUT, DELETE) ---
+        async function loadProfile() {
+            const res = await fetch(`${API_URL}/profile?user=${currentUser}`);
+            if(res.ok) {
+                const data = await res.json();
+                if(data.image) document.getElementById('profilePic').src = data.image;
+                else document.getElementById('profilePic').src = 'https://via.placeholder.com/80';
+            }
+        }
+
+        async function uploadProfile(input) {
+            if (!input.files[0]) return;
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const base64Img = e.target.result;
+                await fetch(`${API_URL}/profile`, { method: 'PUT', body: JSON.stringify({ user: currentUser, image: base64Img }) });
+                loadProfile();
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+
+        async function deleteProfile() {
+            if(!confirm("Remove profile picture?")) return;
+            await fetch(`${API_URL}/profile`, { method: 'DELETE', body: JSON.stringify({ user: currentUser }) });
+            loadProfile();
+        }
+
+
+
+
+
+
+        // --- Chat Management (GET, POST, PUT, DELETE) ---
+        async function fetchMessages() {
+            const res = await fetch(`${API_URL}/chat?room=${currentRoom}`);
+            const messages = await res.json();
+            const chatBox = document.getElementById('chatBox');
+            
+            // ذخیره موقعیت اسکرول برای جلوگیری از پرش‌های ناگهانی
+            const isAtBottom = chatBox.scrollHeight - chatBox.scrollTop <= chatBox.clientHeight + 50;
+            
+            chatBox.innerHTML = '';
+
+            messages.forEach(msg => {
+                const isMe = msg.sender === currentUser;
+                const div = document.createElement('div');
+                div.className = `message ${isMe ? 'me' : 'other'}`;
+                
+                let contentHtml = msg.type === 'image' 
+                    ? `<img src="${msg.content}" class="msg-image">`
+                    : `<span>${msg.content}</span>`;
+
+                let actionsHtml = isMe ? `
+                    <div class="msg-actions">
+                        ${msg.type === 'text' ? `<i class="fa-solid fa-pen" onclick="editMessage('${msg.id}', '${msg.content}')"></i>` : ''}
+                        <i class="fa-solid fa-trash" onclick="deleteMessage('${msg.id}')"></i>
+                    </div>` : '';
+
+                div.innerHTML = `
+                    ${!isMe ? `<div class="sender-name">${msg.sender}</div>` : ''}
+                    <div class="msg-bubble">${contentHtml}</div>
+                    ${actionsHtml}
+                `;
+                chatBox.appendChild(div);
+            });
+            
+            if (isAtBottom) chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        async function sendText() {
+            const input = document.getElementById('msgInput');
+            const text = input.value.trim();
+            if (!text) return;
+            await fetch(`${API_URL}/chat?room=${currentRoom}`, {
+                method: 'POST',
+                body: JSON.stringify({ sender: currentUser, type: 'text', content: text })
+            });
+            input.value = '';
+            fetchMessages();
+        }
+
+        async function sendImage(input) {
+            if (!input.files[0]) return;
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const base64Img = e.target.result;
+                await fetch(`${API_URL}/chat?room=${currentRoom}`, {
+                    method: 'POST',
+                    body: JSON.stringify({ sender: currentUser, type: 'image', content: base64Img })
+                });
+                fetchMessages();
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+
+        async function deleteMessage(id) {
+            if(!confirm("Delete this message?")) return;
+            await fetch(`${API_URL}/chat?room=${currentRoom}`, { method: 'DELETE', body: JSON.stringify({ id }) });
+            fetchMessages();
+        }
+
+        async function editMessage(id, oldContent) {
+            const newContent = prompt("Edit your message:", oldContent);
+            if(newContent && newContent !== oldContent) {
+                await fetch(`${API_URL}/chat?room=${currentRoom}`, { method: 'PUT', body: JSON.stringify({ id, content: newContent }) });
+                fetchMessages();
+            }
+        }
+
+        function switchRoom(room, element) {
+            currentRoom = room;
+            document.getElementById('roomTitle').innerText = `# ${room}`;
+            document.querySelectorAll('.room-list li').forEach(li => li.classList.remove('active'));
+            element.classList.add('active');
+            fetchMessages();
+        }
+
+        function logout() {
+            localStorage.removeItem('whisperUser');
+            window.location.href = 'login.html';
+        }
+
+        // Initialize
+        loadProfile();
+        fetchMessages();
+        setInterval(fetchMessages, 2000); // Polling for new messages
+    </script>
+</body>
+</html>
